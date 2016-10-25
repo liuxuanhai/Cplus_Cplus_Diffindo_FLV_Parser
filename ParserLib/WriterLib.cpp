@@ -119,19 +119,80 @@ int CFlvWriter::Extract_tags_with_range(UINT32 startIdx, UINT32 endIdx)
 
 int CFlvWriter::Create_FLV_with_edited_tag(pTag_buf_edit_callback callback)
 {
+	bool permit = true;
 	CFlvParser *parser = const_cast<CFlvParser *>(m_parser);
 	CFlvTag *tag = parser->Get_first_tag();
 
 	while (tag)
 	{
-		callback(tag);
+		if (callback)
+		{
+			permit = callback(tag);
+		}
 
-		write_tag(tag);
+		if (permit)
+		{
+			write_tag(tag);
+		}		
 
 		tag = tag->m_nextTag;
 	}
 	return kFlvParserError_NoError;
 }
+
+
+
+int CFlvWriter::Append_flv_file_with_frame_sample_rate(double frameRate, double sampleRate, const CFlvParser *nextParser)
+{
+	int videoTagCnt = 0, audioTagCnt = 0;
+
+	// write out first flv file...
+	CFlvParser *parser = const_cast<CFlvParser *>(m_parser);
+	CFlvTag *tag = parser->Get_first_tag();
+	while (tag)
+	{
+		if ((tag->Get_tag_type() == TAG_TYPE_VIDEO) )
+		{
+			videoTagCnt++;
+		} 
+		else if ((tag->Get_tag_type() == TAG_TYPE_AUDIO) )
+		{
+			audioTagCnt++;
+		}
+		write_tag(tag);
+		tag = tag->m_nextTag;
+	}
+
+ 	videoTagCnt++;
+ 	audioTagCnt--;
+	
+	parser = const_cast<CFlvParser *>(nextParser);
+	tag = parser->Get_first_tag();
+	while (tag)
+	{
+		if (tag->Get_tag_type() == TAG_TYPE_SCRIPT)
+		{
+			tag = tag->m_nextTag;
+			continue;
+		}
+		else if (tag->Get_tag_type() == TAG_TYPE_VIDEO)
+		{
+			double videoTimeStamp = (videoTagCnt++) * 1000.0 / frameRate;
+			tag->Set_tag_timestamp(static_cast<UINT32>(videoTimeStamp));
+		}
+		else if (tag->Get_tag_type() == TAG_TYPE_AUDIO)
+		{
+			double audioTimeStamp = (audioTagCnt++) * 1024.0 / sampleRate;
+			tag->Set_tag_timestamp(static_cast<UINT32>(audioTimeStamp));
+		}
+
+		write_tag(tag);
+		tag = tag->m_nextTag;
+	}
+
+	return kFlvParserError_NoError;
+}
+
 
 int CFlvWriter::write_tag(CFlvTag *tag)
 {

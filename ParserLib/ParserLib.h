@@ -302,7 +302,6 @@ private:
 };
 
 // ScriptTag class
-class CScriptDataValue;
 class PARSERLIB_API ScriptTag
 {
 public:
@@ -316,10 +315,9 @@ private:
 	BYTE *m_dataBuffer;
 	UINT32 m_dataSize;
 
-	CScriptDataValue *m_scriptName;
 };
 
-typedef void(*pTag_buf_edit_callback)(CFlvTag *tag);
+typedef bool(*pTag_buf_edit_callback)(CFlvTag *tag);
 
 // Flv file writer...
 class PARSERLIB_API CFlvWriter
@@ -336,6 +334,9 @@ public:
 
 	// Extract flv tags with start and end index
 	int Extract_tags_with_range(UINT32 startIdx, UINT32 endIdx);
+
+	// Append one flv file to another one
+	int Append_flv_file_with_frame_sample_rate(double frameRate, double sampleRate, const CFlvParser *nextParser);
 
 private:
 	const char *m_outputFileName;

@@ -6,9 +6,30 @@
 #include <iostream>
 using namespace std;
 
-void edit_tag(CFlvTag *tag)
+UINT32 g_lastVideoTimeStamp = 0, g_lastAudioTimeStamp = 0;
+
+bool edit_tag(CFlvTag *tag)
 {
-	return;
+	UINT32 tagIndex = tag->Get_tag_index();
+
+	if (tagIndex < 50)
+	{
+		return true;
+	}
+	
+	if (tag->Get_tag_type() == TAG_TYPE_AUDIO)
+	{
+		if (tag->Get_tag_timestamp_ext() == g_lastAudioTimeStamp)
+		{
+			return false;
+		}
+		else
+		{
+			g_lastAudioTimeStamp = tag->Get_tag_timestamp_ext();
+		}
+	}
+
+	return true;
 }
 
 int main(int argc, char **argv)
@@ -22,12 +43,22 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
+/*	CFlvParser parser2(argv[2]);
+	err = parser2.Parse();
+	if (err < 0)
+	{
+		cout << argv[1] << " : " << errorHints[-err] << endl;
+		return -1;
+	}
+*/
 	CFlvWriter writer(argv[2], &parser);
 	if (writer.Init(true, true))
 	{
 		cout << argv[2] << " : " << errorHints[-err] << endl;
 		return -1;
 	}
+
+//	writer.Append_flv_file_with_frame_sample_rate(23.985, 22.05, &parser2);
 //	writer.Clone_FLV_with_video();
 //	writer.Create_FLV_with_edited_tag(edit_tag);
 	writer.Extract_tags_with_range(10, 1778);
