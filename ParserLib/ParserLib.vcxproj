@@ -162,6 +162,13 @@ copy /Y $(ProjectDir)ParserLib.h $(SolutionDir)output\inc</Command>
     <ClInclude Include="FlvBody.h" />
     <ClInclude Include="GlobalUtils.h" />
     <ClInclude Include="ParserLib.h" />
+    <ClInclude Include="ScriptDataBoolean.h" />
+    <ClInclude Include="ScriptDataECMAArray.h" />
+    <ClInclude Include="ScriptDataNumber.h" />
+    <ClInclude Include="ScriptDataObject.h" />
+    <ClInclude Include="ScriptDataStrictArray.h" />
+    <ClInclude Include="ScriptDataString.h" />
+    <ClInclude Include="ScriptDataValue.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -185,6 +192,13 @@ copy /Y $(ProjectDir)ParserLib.h $(SolutionDir)output\inc</Command>
     <ClCompile Include="FlvTag.cpp" />
     <ClCompile Include="GlobalUtils.cpp" />
     <ClCompile Include="ParserLib.cpp" />
+    <ClCompile Include="ScriptDataBoolean.cpp" />
+    <ClCompile Include="ScriptDataECMAArray.cpp" />
+    <ClCompile Include="ScriptDataNumber.cpp" />
+    <ClCompile Include="ScriptDataObject.cpp" />
+    <ClCompile Include="ScriptDataStrictArray.cpp" />
+    <ClCompile Include="ScriptDataString.cpp" />
+    <ClCompile Include="ScriptDataValue.cpp" />
     <ClCompile Include="ScriptTag.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

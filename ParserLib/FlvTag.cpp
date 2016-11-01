@@ -152,6 +152,12 @@ void CFlvTag::Dump_tag_info()
 	}
 #endif
 
+#if DUMP_SCRIPT_INFO_ENABLED_LOG
+	if (m_scriptTag)
+	{
+		m_scriptTag->Dump_script_tag_info();
+	}
+#endif
 }
 
 UINT8 CFlvTag::Get_tag_type()

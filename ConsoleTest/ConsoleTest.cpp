@@ -43,6 +43,8 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
+	return 0;
+
 /*	CFlvParser parser2(argv[2]);
 	err = parser2.Parse();
 	if (err < 0)

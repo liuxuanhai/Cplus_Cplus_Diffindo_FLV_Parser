@@ -19,6 +19,9 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="5.ScriptValue">
+      <UniqueIdentifier>{ed9817db-06f9-43ba-b05e-7539ffdfd913}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -41,6 +44,27 @@
     </ClInclude>
     <ClInclude Include="Configuration.h">
       <Filter>1.Global</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptDataValue.h">
+      <Filter>5.ScriptValue</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptDataString.h">
+      <Filter>5.ScriptValue</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptDataObject.h">
+      <Filter>5.ScriptValue</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptDataECMAArray.h">
+      <Filter>5.ScriptValue</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptDataBoolean.h">
+      <Filter>5.ScriptValue</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptDataNumber.h">
+      <Filter>5.ScriptValue</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptDataStrictArray.h">
+      <Filter>5.ScriptValue</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -73,6 +97,27 @@
     </ClCompile>
     <ClCompile Include="ScriptTag.cpp">
       <Filter>4.Tag</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptDataValue.cpp">
+      <Filter>5.ScriptValue</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptDataString.cpp">
+      <Filter>5.ScriptValue</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptDataObject.cpp">
+      <Filter>5.ScriptValue</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptDataECMAArray.cpp">
+      <Filter>5.ScriptValue</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptDataBoolean.cpp">
+      <Filter>5.ScriptValue</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptDataNumber.cpp">
+      <Filter>5.ScriptValue</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptDataStrictArray.cpp">
+      <Filter>5.ScriptValue</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

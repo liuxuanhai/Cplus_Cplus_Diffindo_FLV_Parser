@@ -18,6 +18,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <assert.h>
 
 #include "GlobalUtils.h"
 #include "Configuration.h"

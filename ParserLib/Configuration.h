@@ -15,4 +15,7 @@
 
 #define DUMP_ONLY_VIDEO_TAG_INFO 1						//只输出视频Tag的信息
 
+#define DUMP_SCRIPT_INFO_ENABLED_LOG 1					//在日志文件中输出视频script信息
+#define DUMP_SCRIPT_INFO_ENABLED_CONSOLE 1				//控制台窗口输出Script Tag详细信息
+
 #endif // _CONFIGURATION_H_
