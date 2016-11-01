@@ -27,3 +27,8 @@ void CScriptDataNumber::Dump_script_data_value()
 	g_logoutFile << '\t' << to_string(m_scriptValueNumber);
 #endif
 }
+
+void CScriptDataNumber::Set_new_value(double newValue)
+{
+	m_scriptValueNumber = newValue;
+}

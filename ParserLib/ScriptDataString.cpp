@@ -45,3 +45,8 @@ void CScriptDataString::Dump_script_data_value()
 	cout << m_stringBuffer << endl;
 #endif
 }
+
+char * CScriptDataString::Get_string_buffer()
+{
+	return reinterpret_cast<char *>(m_stringBuffer);
+}

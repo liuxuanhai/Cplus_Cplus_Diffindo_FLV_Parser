@@ -38,9 +38,12 @@ const int kFlvParserError_IllegalNALUHeaderLen = -15;
 const int kFlvParserError_MultipleSliceInFrame = -16;
 const int kFlvParserError_IllegalScriptValueType = -17;
 const int kFlvParserError_UnsupportedValueTypeInStrictArray = -18;
+const int kFlvParserError_NoScriptTagExists = -19;
+const int kFlvParserError_RunTimeError = -20;
+const int kFlvParserError_PropertyNotFound = -21;
 
 // Flv parsing error description...
-extern PARSERLIB_API const char* errorHints[19];
+extern PARSERLIB_API const char* errorHints[22];
 
 // Flv header structure
 typedef struct _tFlvHeader
@@ -93,6 +96,9 @@ public:
 	const char * Get_tag_payload_buf();
 	// Return total tag index...
 	UINT32 Get_tag_index();
+
+	ScriptTag *Get_script_tag();
+
 	// Modify time stamp of this tag
 	void Set_tag_timestamp(UINT32 timestamp);
 
@@ -132,6 +138,9 @@ public:
 
 	// Return memory buffer of the parser...
 	BYTE *Get_parser_buffer();
+
+	// FLV tag properties customization
+	int Set_script_value(const char *property, double newVal);
 
 private:
 	const char    *m_fileName;		// input file name...
@@ -312,6 +321,9 @@ public:
 
 	// Parse Script tag from bit stream
 	int Parse();
+
+	// Set script property value
+	int Set_script_property_value(const char *property, double newVal);
 
 	// Dump script tag info to log file
 	void Dump_script_tag_info();

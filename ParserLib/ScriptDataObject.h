@@ -9,6 +9,10 @@ public:
 	~CScriptDataObjectProperty();
 
 	CScriptDataObjectProperty* &Get_next_property_ptr();
+
+	char *Get_property_name();
+	int Set_property_value(double newValue);
+
 	int Parse(UINT32 &scriptValueLength);
 	void Dump_script_data_value();
 

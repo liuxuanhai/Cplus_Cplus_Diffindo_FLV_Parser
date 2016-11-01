@@ -54,3 +54,26 @@ void ScriptTag::Dump_script_tag_info()
 	m_ScriptTagValue->Dump_script_data_value();
 #endif
 }
+
+
+int ScriptTag::Set_script_property_value(const char *property, double newVal)
+{
+	int stringLength = strlen(property);
+	BYTE* memCache = m_dataBuffer;
+	double valCache = 0;
+	read_len_swap(reinterpret_cast<BYTE *>(&valCache), reinterpret_cast<BYTE *>(&newVal), sizeof(double));
+
+	while (memcmp(memCache, property, stringLength))
+	{
+		memCache++;
+	}
+
+	memcpy_s(memCache + stringLength + 1, sizeof(double), &valCache, sizeof(double));
+
+	return kFlvParserError_NoError;
+}
+
+ScriptTag * CFlvTag::Get_script_tag()
+{
+	return m_scriptTag;
+}

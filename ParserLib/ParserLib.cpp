@@ -8,7 +8,7 @@
 using namespace std;
 
 // Flv parsing error description...
-PARSERLIB_API const char* errorHints[19] = 
+PARSERLIB_API const char* errorHints[22] = 
 {
 	NULL,
 	"Error: input file name should not be empty",
@@ -28,7 +28,10 @@ PARSERLIB_API const char* errorHints[19] =
 	"Error: NALU header length illegal, should only be 1, 2 or 4",
 	"Error: Multiple slice in frame not supported",
 	"Error: Illegal script value type",
-	"Error: Unsupported value type in ScriptDataStrictArray, only Number supported"
+	"Error: Unsupported value type in ScriptDataStrictArray, only Number supported",
+	"Error: Cannot find script tag in flv file",
+	"Error: Run time error, eg. dynamic_case failed...",
+	"Error: Cannot find target property name"
 };
 
 // Constructor
@@ -119,6 +122,25 @@ BYTE * CFlvParser::Get_parser_buffer()
 	return m_fileBuf;
 }
 
+
+int CFlvParser::Set_script_value(const char *property, double newVal)
+{
+	CFlvTag *scriptTag = m_flvBody->Get_first_tag();
+	while (scriptTag->Get_tag_type() != TAG_TYPE_SCRIPT)
+	{
+		scriptTag = scriptTag->m_nextTag;
+	}
+
+	if (!scriptTag)
+	{
+		return kFlvParserError_NoScriptTagExists;
+	}
+
+	ScriptTag *script = scriptTag->Get_script_tag();
+	script->Set_script_property_value(property, newVal);
+
+	return kFlvParserError_NoError;
+}
 
 //======================Private Methods==========================
 int CFlvParser::open_input_file()

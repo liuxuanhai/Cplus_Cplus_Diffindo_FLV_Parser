@@ -48,3 +48,21 @@ void CScriptDataECMAArray::Dump_script_data_value()
 	
 #endif
 }
+
+int CScriptDataECMAArray::Transversing_properties(const char *property, double newVal)
+{
+	CScriptDataObjectProperty *target = m_ECMAVariables->Get_first_object_property();
+	while (strcmp(target->Get_property_name(), property))
+	{
+		target = target->Get_next_property_ptr();
+	}
+
+	if (!target)
+	{
+		return kFlvParserError_PropertyNotFound;
+	}
+
+	target->Set_property_value(newVal);
+
+	return kFlvParserError_NoError;
+}

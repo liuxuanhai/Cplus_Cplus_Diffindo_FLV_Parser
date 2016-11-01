@@ -35,6 +35,24 @@ CScriptDataObjectProperty* &CScriptDataObjectProperty::Get_next_property_ptr()
 	return m_nextProperty;
 }
 
+char * CScriptDataObjectProperty::Get_property_name()
+{
+	return m_propertyName->Get_string_buffer();
+}
+
+int CScriptDataObjectProperty::Set_property_value(double newValue)
+{
+	CScriptDataNumber *newValueData = dynamic_cast<CScriptDataNumber *>(m_propertyData);
+	if (NULL != newValueData)
+	{
+		return kFlvParserError_RunTimeError;
+	}
+
+	newValueData->Set_new_value(newValue);
+
+	return kFlvParserError_NoError;
+}
+
 int CScriptDataObjectProperty::Parse(UINT32 &scriptValueLength)
 {
 	UINT32 valueLength = 0;
