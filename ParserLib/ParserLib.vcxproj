@@ -78,6 +78,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)bin\$(ProjectName)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -136,6 +137,17 @@ copy /Y $(ProjectDir)ParserLib.h $(SolutionDir)output\inc</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>mkdir $(SolutionDir)output\lib
+mkdir $(SolutionDir)output\inc
+mkdir $(SolutionDir)output\pdb
+mkdir $(SolutionDir)output\exe
+copy /Y $(OutDir)$(ProjectName).dll $(SolutionDir)output\exe
+copy /Y $(OutDir)$(ProjectName).dll $(SolutionDir)output\lib
+copy /Y $(OutDir)$(ProjectName).lib $(SolutionDir)output\lib
+copy /Y $(OutDir)$(ProjectName).pdb $(SolutionDir)output\pdb
+copy /Y $(ProjectDir)ParserLib.h $(SolutionDir)output\inc</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>

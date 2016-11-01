@@ -35,12 +35,12 @@ int ScriptTag::Parse()
 	int err = 0;
 	UINT32 byteOffset = 0;
 
-	assert(m_dataBuffer[byteOffset++] == 2);
-	m_ScriptTagName = new CScriptDataString(m_dataBuffer + byteOffset);
+	assert(m_dataBuffer[byteOffset] == 2);
+	m_ScriptTagName = new CScriptDataString(m_dataBuffer + (++byteOffset));
 	m_ScriptTagName->Parse(byteOffset);
 
-	assert(m_dataBuffer[byteOffset++] == 8);
-	m_ScriptTagValue = new CScriptDataECMAArray(m_dataBuffer + byteOffset);
+	assert(m_dataBuffer[byteOffset] == 8);
+	m_ScriptTagValue = new CScriptDataECMAArray(m_dataBuffer + (++byteOffset));
 	m_ScriptTagValue->Parse(byteOffset);
 
 	return kFlvParserError_NoError;

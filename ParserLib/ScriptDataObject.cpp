@@ -62,7 +62,7 @@ int CScriptDataObjectProperty::Parse(UINT32 &scriptValueLength)
 		break;
 	default:
 		std::cout << "data type: " << std::to_string(dataType) << " detected." << std::endl;
-		break;
+		return kFlvParserError_IllegalScriptValueType;
 	}
 
 	m_propertyData->Parse(valueLength);
