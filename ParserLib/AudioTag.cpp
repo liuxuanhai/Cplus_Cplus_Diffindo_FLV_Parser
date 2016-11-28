@@ -91,6 +91,10 @@ int AudioTag::Parse()
 
 void AudioTag::Dump_audio_tag_info()
 {
+#if DUMP_ONLY_VIDEO_TAG_INFO
+	return;
+#endif
+
 #if DUMP_AUDIO_TAG_INFO_ENABLED_LOG
 	int soundRateArr[4] = { 5500, 11000, 22000, 44000 };
 

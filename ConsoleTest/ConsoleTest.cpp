@@ -23,18 +23,18 @@ int main(int argc, char **argv)
 		cout << argv[1] <<" : " << errorHints[-err] << endl;
 		return -1;
 	}
-	parser.Set_script_value("framerate", 25.21);
+//	parser.Set_script_value("framerate", 25.21);
 
-//	return 0;
+	return 0;
 
-/*	CFlvParser parser2(argv[2]);
-	err = parser2.Parse();
-	if (err < 0)
-	{
-		cout << argv[1] << " : " << errorHints[-err] << endl;
-		return -1;
-	}
-*/
+// 	CFlvParser parser2(argv[2]);
+// 	err = parser2.Parse();
+// 	if (err < 0)
+// 	{
+// 		cout << argv[1] << " : " << errorHints[-err] << endl;
+// 		return -1;
+// 	}
+
 	CFlvWriter writer(argv[2], &parser);
 	if (writer.Init(true, true))
 	{
@@ -43,9 +43,9 @@ int main(int argc, char **argv)
 	}
 
 //	writer.Append_flv_file_with_frame_sample_rate(23.985, 22.05, &parser2);
-//	writer.Clone_FLV_with_video();
+	writer.Clone_FLV_with_video();
 //	writer.Create_FLV_with_edited_tag(edit_tag);
-	writer.Extract_tags_with_range(0, 50);
+//	writer.Extract_tags_with_range(0, 50);
 	
     return 0;
 }

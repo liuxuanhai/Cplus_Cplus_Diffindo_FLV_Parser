@@ -20,5 +20,6 @@
 #include <fstream>
 #include <assert.h>
 
+#include "Utils.h"
 #include "GlobalUtils.h"
 #include "Configuration.h"

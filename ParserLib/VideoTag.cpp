@@ -225,6 +225,7 @@ int VideoTag::create_video_tag_header()
 int VideoTag::parse_nal_unit()
 {
 	UINT32 totalLen = 0, len = 0;
+	UINT8 bytePosition = 0, bitPosition = 1;
 
 	while (totalLen < m_nals->lengths)
 	{
@@ -236,9 +237,19 @@ int VideoTag::parse_nal_unit()
 		nalUnit->nalUnitType = m_nals->bufStart[4 + totalLen] & 0x1F;
 
 		// Check no-multiple-slice-in-frame
-		if (!(0x80 & m_nals->bufStart[5]) && ((nalUnit->nalUnitType == 5) || (nalUnit->nalUnitType == 1)))
+		if (!(0x80 & m_nals->bufStart[5 + totalLen]) && ((nalUnit->nalUnitType == 5) || (nalUnit->nalUnitType == 1)))
 		{
 			return kFlvParserError_MultipleSliceInFrame;
+		}
+
+		// Get slice type
+		if (nalUnit->nalUnitType == 5)
+		{
+			nalUnit->sliceType = 2;
+		}
+		else if (nalUnit->nalUnitType == 1)
+		{
+			nalUnit->sliceType = Get_uev_code_num(m_nals->bufStart + 5, bytePosition, bitPosition);
 		}
 
 		if (!m_firstUnit)
@@ -264,6 +275,7 @@ void VideoTag::dump_nal_info()
 	while (unit)
 	{
 		g_logoutFile << "NAL Unit Type: " << to_string(unit->nalUnitType) << endl;
+		g_logoutFile << "Slice type: " << to_string(unit->sliceType) << endl;
 		unit = unit->nextNalUnit;
 	}
 #endif
