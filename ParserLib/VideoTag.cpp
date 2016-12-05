@@ -275,7 +275,10 @@ void VideoTag::dump_nal_info()
 	while (unit)
 	{
 		g_logoutFile << "NAL Unit Type: " << to_string(unit->nalUnitType) << endl;
-		g_logoutFile << "Slice type: " << to_string(unit->sliceType) << endl;
+		if ((unit->nalUnitType == 5) || (unit->nalUnitType == 1))
+		{
+			g_logoutFile << "Slice type: " << to_string(unit->sliceType) << endl;
+		}
 		unit = unit->nextNalUnit;
 	}
 #endif

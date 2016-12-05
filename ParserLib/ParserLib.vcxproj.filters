@@ -66,6 +66,9 @@
     <ClInclude Include="ScriptDataStrictArray.h">
       <Filter>5.ScriptValue</Filter>
     </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>1.Global</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ParserLib.cpp">
@@ -118,6 +121,9 @@
     </ClCompile>
     <ClCompile Include="ScriptDataStrictArray.cpp">
       <Filter>5.ScriptValue</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>1.Global</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
