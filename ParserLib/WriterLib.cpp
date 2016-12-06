@@ -193,6 +193,63 @@ int CFlvWriter::Append_flv_file_with_frame_sample_rate(double frameRate, double 
 	return kFlvParserError_NoError;
 }
 
+// Extract video stream
+int CFlvWriter::Extract_h264_nals()
+{
+	m_outputH264FileStream.open(m_outputFileName, ios_base::binary);
+	if (!m_outputH264FileStream.is_open())
+	{
+		return kFlvParserError_OpenOutputFileFailed;
+	}
+
+	CFlvParser *thisParser = const_cast<CFlvParser *>(m_parser);
+	CFlvTag *tag = thisParser->Get_first_tag();
+
+	BYTE *spsBuf = NULL, *ppsBuf = NULL;
+	UINT16 spsLen = 0, ppsLen = 0;
+	NALUnit *nalu = NULL;
+
+	while (tag)
+	{
+		if (tag->Get_tag_type() != TAG_TYPE_VIDEO)
+		{
+			tag = tag->m_nextTag;
+			continue;
+		}
+
+		VideoTag *videoTag = tag->Get_video_tag();
+		if (videoTag->m_videoTagHeader->AVPacketType == 0)
+		{
+			spsBuf = videoTag->Get_sps_buf_with_len(spsLen);
+			ppsBuf = videoTag->Get_pps_buf_with_len(ppsLen);
+
+			//write sps...
+			write_nalu(spsBuf, spsLen);
+
+			//write pps...
+			write_nalu(ppsBuf, ppsLen);
+		}
+		else
+		{
+			nalu = videoTag->Get_first_nalu();
+			if (!nalu)
+			{
+				continue;
+			}
+
+			do 
+			{
+				write_nalu(nalu->dataAddr, nalu->len);
+				nalu = nalu->nextNalUnit;
+			} while (nalu);
+		}
+
+		tag = tag->m_nextTag;
+	}
+
+	m_outputH264FileStream.close();
+	return kFlvParserError_NoError;
+}
 
 int CFlvWriter::write_tag(CFlvTag *tag)
 {
@@ -261,4 +318,24 @@ int CFlvWriter::write_tag(CFlvTag *tag)
 	m_outputFileStream.flush();
 
 	return kFlvParserError_NoError;
+}
+
+int CFlvWriter::write_nalu(BYTE *nalBuffer, UINT32 nalLen)
+{
+	UINT8 prefix[4] = { 0,0,0,1 };
+	m_outputH264FileStream.write(reinterpret_cast<const char*>(prefix), 4 * sizeof(BYTE));
+	if ((m_outputH264FileStream.rdstate() & ifstream::failbit) || (m_outputH264FileStream.rdstate() & ifstream::badbit))
+	{
+		m_outputH264FileStream.close();
+		return kFlvParserError_WriteOutputFileFailed;
+	}
+	m_outputH264FileStream.flush();
+
+	m_outputH264FileStream.write(reinterpret_cast<const char*>(nalBuffer), nalLen * sizeof(BYTE));
+	if ((m_outputH264FileStream.rdstate() & ifstream::failbit) || (m_outputH264FileStream.rdstate() & ifstream::badbit))
+	{
+		m_outputH264FileStream.close();
+		return kFlvParserError_WriteOutputFileFailed;
+	}
+	m_outputH264FileStream.flush();
 }

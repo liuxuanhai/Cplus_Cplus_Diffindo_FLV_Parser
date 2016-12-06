@@ -202,6 +202,13 @@ BYTE * VideoTag::Get_pps_buf_with_len(UINT16 &ppsLen)
 	return m_decoderConfigRecord->Get_pps_buf();
 }
 
+
+NALUnit * VideoTag::Get_first_nalu()
+{
+	return m_firstUnit;
+}
+
+
 int VideoTag::create_video_tag_header()
 {
 	int err = 0;
@@ -233,8 +240,10 @@ int VideoTag::parse_nal_unit()
 		NALUnit *nalUnit = new NALUnit;
 		memset(nalUnit, 0, sizeof(NALUnit));
 
-		// Get nal unit type
+		// Get nal unit type & addr & len
 		nalUnit->nalUnitType = m_nals->bufStart[4 + totalLen] & 0x1F;
+		nalUnit->len = len;
+		nalUnit->dataAddr = m_nals->bufStart + totalLen + 4;
 
 		// Check no-multiple-slice-in-frame
 		if (!(0x80 & m_nals->bufStart[5 + totalLen]) && ((nalUnit->nalUnitType == 5) || (nalUnit->nalUnitType == 1)))
@@ -243,13 +252,9 @@ int VideoTag::parse_nal_unit()
 		}
 
 		// Get slice type
-		if (nalUnit->nalUnitType == 5)
+		if ((nalUnit->nalUnitType == 5) || (nalUnit->nalUnitType == 1))
 		{
-			nalUnit->sliceType = 2;
-		}
-		else if (nalUnit->nalUnitType == 1)
-		{
-			nalUnit->sliceType = Get_uev_code_num(m_nals->bufStart + 5, bytePosition, bitPosition);
+			nalUnit->sliceType = Get_uev_code_num(nalUnit->dataAddr + 1, bytePosition, bitPosition);
 		}
 
 		if (!m_firstUnit)
@@ -275,6 +280,7 @@ void VideoTag::dump_nal_info()
 	while (unit)
 	{
 		g_logoutFile << "NAL Unit Type: " << to_string(unit->nalUnitType) << endl;
+		g_logoutFile << "NAL Unit Length: " << to_string(unit->len) << endl;
 		if ((unit->nalUnitType == 5) || (unit->nalUnitType == 1))
 		{
 			g_logoutFile << "Slice type: " << to_string(unit->sliceType) << endl;

@@ -98,6 +98,7 @@ public:
 	UINT32 Get_tag_index();
 
 	ScriptTag *Get_script_tag();
+	VideoTag *Get_video_tag();
 
 	// Modify time stamp of this tag
 	void Set_tag_timestamp(UINT32 timestamp);
@@ -196,6 +197,8 @@ typedef struct NALUnit
 {
 	UINT8 nalUnitType;
 	UINT8 sliceType;
+	BYTE *dataAddr;
+	int  len;
 
 	NALUnit *nextNalUnit;
 } NALUnit;
@@ -252,6 +255,7 @@ public:
 
 	BYTE *Get_sps_buf_with_len(UINT16 &spsLen);	// Get sps buffer pointer and sps length
 	BYTE *Get_pps_buf_with_len(UINT16 &ppsLen);	// Get pps buffer pointer and pps length
+	NALUnit *Get_first_nalu();
 
 private:
 	BYTE *m_dataBuffer;
@@ -358,10 +362,15 @@ public:
 	// Append one flv file to another one
 	int Append_flv_file_with_frame_sample_rate(double frameRate, double sampleRate, const CFlvParser *nextParser);
 
+	// Extract video stream
+	int Extract_h264_nals();
+
 private:
 	const char *m_outputFileName;
 	const CFlvParser *m_parser;
 	std::ofstream m_outputFileStream;
+	std::ofstream m_outputH264FileStream;
 
  	int write_tag(CFlvTag *tag);	// Write tag to output file
+	int write_nalu(BYTE *nalBuffer, UINT32 nalLen);	//Write nal unit to output file
 };

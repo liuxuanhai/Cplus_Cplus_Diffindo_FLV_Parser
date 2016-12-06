@@ -72,8 +72,3 @@ int ScriptTag::Set_script_property_value(const char *property, double newVal)
 
 	return kFlvParserError_NoError;
 }
-
-ScriptTag * CFlvTag::Get_script_tag()
-{
-	return m_scriptTag;
-}

@@ -201,3 +201,13 @@ void CFlvTag::Set_tag_timestamp(UINT32 timestamp)
 {
 	m_timeStamp = timestamp;
 }
+
+ScriptTag * CFlvTag::Get_script_tag()
+{
+	return m_scriptTag;
+}
+
+VideoTag * CFlvTag::Get_video_tag()
+{
+	return m_videoTag;
+}
